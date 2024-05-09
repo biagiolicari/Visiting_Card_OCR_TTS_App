@@ -44,9 +44,6 @@ async def extract_text_from_image(cropped_img, endpoint, subscription_key):
     print('Reading text')
     detect_orientation = True
 
-    # Convert the cropped image (NumPy array) into bytes
-    image_bytes = cv2.imencode('.jpg', cropped_img)[1].tobytes()
-
     # Request parameters
     params = {
         'overload': 'stream',
@@ -129,7 +126,9 @@ async def process_frame(frame, model, threshold, endpoint, subscription_key, reg
                     # Display ROI
                     cv2.imshow('Visiting Card', cropped_img)
 
-                    # Add ROI to image batch
+                    # Add frame to image batch
+                    # Convert the cropped image (NumPy array) into bytes
+                    cropped_img = cv2.imencode('.jpg', cropped_img)[1].tobytes()
                     image_batch.append(cropped_img)
 
     # Check batch size and process if reached
@@ -137,7 +136,7 @@ async def process_frame(frame, model, threshold, endpoint, subscription_key, reg
         best_frame = get_best_frame(image_batch)
 
         text = await extract_text_from_image(best_frame, endpoint=endpoint,
-                                                 subscription_key=subscription_key)
+                                             subscription_key=subscription_key)
         await text_to_speech(text, subscription_key, region)
 
         # Clear the batch
