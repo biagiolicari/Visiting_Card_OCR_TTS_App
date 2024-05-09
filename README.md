@@ -70,6 +70,3 @@ This application utilizes computer vision techniques to detect visiting cards fr
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-Feel free to customize the README according to your specific project details and preferences.
